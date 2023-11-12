@@ -4,10 +4,10 @@ import NavBar from '../components/NavBar';
 
 type Props = {}
 
-export default function Subscriptions({}: Props) {
+export default function MyMeetings({}: Props) {
   return (
     <>
-      <NavBar pageName='Subscriptions'/>
+      <NavBar pageName='My Meetings'/>
     </>
   )
 }
