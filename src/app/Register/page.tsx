@@ -1,9 +1,9 @@
 import React from 'react'
-import {Card, CardHeader, CardBody, Divider, Input, Button, Link, Image} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, Divider, Input, Button, Textarea, Link, Image} from "@nextui-org/react";
 
 type Props = {}
 
-export default function Login({}: Props) {
+export default function Register({}: Props) {
   return (
     <div className='flex flex-col items-center'>
       <Image
@@ -12,10 +12,10 @@ export default function Login({}: Props) {
         alt='Logo'
         width={80}
         className='my-10'
-      />      
-      <Card className="w-4/5 aspect-square min-[400px]:aspect-auto max-w-xl mx-auto mb-auto p-2">
+      />
+      <Card className="w-4/5 h-fit min-[400px]:aspect-auto max-w-xl mx-auto mb-auto p-2">
         <CardHeader className='flex justify-center'>
-          <h1 className='text-2xl font-bold'>LOGIN</h1>
+          <h1 className='text-2xl font-bold'>REGISTER</h1>
         </CardHeader>
         <CardBody className="flex items-center overflow-visible">
           <div className='w-10/12 text-center flex flex-col'>
@@ -33,9 +33,15 @@ export default function Login({}: Props) {
               isRequired
             />
             <Divider className='m-2 invisible'/>
+            <Textarea
+              variant="underlined"
+              label="Bio"
+              placeholder="Enter a bio"
+            />
+            <Divider className='m-2 invisible'/>
             <div className='flex flex-col items-center justify-center'>
               <Button radius='sm' className='w-1/2'>Submit</Button>
-              <Link href="/Register">or Sign In</Link>
+              <Link href="/Login">or Log in</Link>
             </div>
           </div>
         </CardBody>

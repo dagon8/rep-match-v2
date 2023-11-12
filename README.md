@@ -2,7 +2,17 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, run this in your CL. It will do a global installation of NextUI:
+
+```bash
+npm i @nextui-org/react framer-motion
+# or
+yarn add @nextui-org/react framer-motion
+# or
+pnpm add @nextui-org/react framer-motion
+```
+
+Second, run the development server:
 
 ```bash
 npm run dev
