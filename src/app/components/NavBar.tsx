@@ -16,7 +16,7 @@ export default function NavBar(props: Props) {
   ];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar onMenuOpenChange={setIsMenuOpen} isBordered>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -35,7 +35,7 @@ export default function NavBar(props: Props) {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menuItems.map((item, index) => (
-          <NavbarItem isActive={item.name === (props.pageName) ? true : false}>
+          <NavbarItem key={`${item.name}-${index}`} isActive={item.name === (props.pageName) ? true : false}>
             <Link
               color={item.name === (props.pageName) ? "primary" : "foreground"}
               href={item.page}
