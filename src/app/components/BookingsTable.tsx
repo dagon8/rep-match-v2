@@ -17,50 +17,47 @@ import {
   Selection,
   ChipProps,
   SortDescriptor,
+  Checkbox,
 } from "@nextui-org/react";
-import { faEllipsisH } from "@fortawesome/free-solid-svg-icons/faEllipsisH";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
-import CancelMeetingModal from "./CancelMeetingModal"
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faSquareCheck } from "@fortawesome/free-regular-svg-icons/faSquareCheck"; 
+import BookMeetingModal from "./BookMeetingModal"
 import InfoMeetingModal from "./InfoMeetingModal"
 
 function capitalize(str:string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["location", "startTime", "date", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["location", "startTime", "date", "subscription", "actions"];
 
 type Props = {
   columns: {
     name: string,
     uid: string,
     sortable?: boolean}[]
-  statusOptions: {
-    name: string, 
-    uid: string
-  }[]
-  statusColorMap:  Record<string, ChipProps["color"]> 
   meetings: {
     location: string,
-    status: string,
     startTime: string,
     duration: string,
     date: string,
     details: string,
+    subscription: boolean
     id: number
   }[]
 }
 
-export default function MeetingsTable(props:Props) {
+export default function BookingsTable(props:Props) {
   //destructure prop values
-  const {columns, statusOptions, meetings, statusColorMap} = props
+  const {columns, meetings} = props
   type Meeting = typeof meetings[0];
 
   //set states
   const [filterValue, setFilterValue] = React.useState("");
+  const [subscriptionFilter, setsubscriptionFilter] = React.useState(false);
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "age",
@@ -86,14 +83,13 @@ export default function MeetingsTable(props:Props) {
         meeting.location.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredMeetings = filteredMeetings.filter((meeting) =>
-        Array.from(statusFilter).includes(meeting.status),
-      );
+
+    if (subscriptionFilter) {
+      filteredMeetings = filteredMeetings.filter((meeting) => meeting.subscription);
     }
 
     return filteredMeetings;
-  }, [meetings, filterValue, statusFilter]);
+  }, [meetings, filterValue, subscriptionFilter]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -143,22 +139,17 @@ export default function MeetingsTable(props:Props) {
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
-      case "status":
-        return (
-          <Chip
-            className="capitalize border-none gap-1 text-default-600"
-            color={statusColorMap[meeting.status]}
-            size="sm"
-            variant="dot"
-          >
-            {cellValue}
-          </Chip>
-        );
+        case "subscription":
+          return (
+            <div className="flex justify-center w-1/3">
+              <FontAwesomeIcon color="gray" size="lg" icon={cellValue ? faSquareCheck : faSquare}/>
+            </div>
+          );
       case "actions":
         return (
           <div className="flex">
             <div className="relative flex items-center">
-              <CancelMeetingModal status={meeting.status}/>
+              <BookMeetingModal/>
             </div>
           </div>
         );
@@ -200,31 +191,7 @@ export default function MeetingsTable(props:Props) {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<FontAwesomeIcon icon={faChevronDown}/>}
-                  size="sm"
-                  variant="flat"
-                >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+            <Checkbox onChange={() => setsubscriptionFilter(!subscriptionFilter)}>Subscriptions Only</Checkbox>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -271,7 +238,7 @@ export default function MeetingsTable(props:Props) {
     );
   }, [
     filterValue,
-    statusFilter,
+    subscriptionFilter,
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
@@ -314,7 +281,7 @@ export default function MeetingsTable(props:Props) {
         {(column) => (
           <TableColumn
             key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
+            align="center"
             allowsSorting={column.sortable}
           >
             {column.name}
