@@ -12,10 +12,8 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   Pagination,
   Selection,
-  ChipProps,
   SortDescriptor,
   Checkbox,
 } from "@nextui-org/react";
@@ -23,41 +21,50 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
-import { faSquareCheck } from "@fortawesome/free-regular-svg-icons/faSquareCheck"; 
-import BookMeetingModal from "./BookMeetingModal"
-import InfoMeetingModal from "./InfoMeetingModal"
+import { faSquareCheck } from "@fortawesome/free-regular-svg-icons/faSquareCheck";
+import BookMeetingModal from "./BookMeetingModal";
+import InfoMeetingModal from "./InfoMeetingModal";
 
-function capitalize(str:string) {
+function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["location", "startTime", "date", "subscription", "actions"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "location",
+  "startTime",
+  "date",
+  "subscription",
+  "actions",
+];
 
 type Props = {
   columns: {
-    name: string,
-    uid: string,
-    sortable?: boolean}[]
+    name: string;
+    uid: string;
+    sortable?: boolean;
+  }[];
   meetings: {
-    location: string,
-    startTime: string,
-    duration: string,
-    date: string,
-    details: string,
-    subscription: boolean
-    id: number
-  }[]
-}
+    location: string;
+    startTime: string;
+    duration: string;
+    date: string;
+    details: string;
+    subscription: boolean;
+    id: number;
+  }[];
+};
 
-export default function BookingsTable(props:Props) {
+export default function BookingsTable(props: Props) {
   //destructure prop values
-  const {columns, meetings} = props
-  type Meeting = typeof meetings[0];
+  const { columns, meetings } = props;
+  type Meeting = (typeof meetings)[0];
 
   //set states
   const [filterValue, setFilterValue] = React.useState("");
   const [subscriptionFilter, setsubscriptionFilter] = React.useState(false);
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+    new Set(INITIAL_VISIBLE_COLUMNS)
+  );
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "age",
@@ -72,7 +79,9 @@ export default function BookingsTable(props:Props) {
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid)
+    );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -80,12 +89,14 @@ export default function BookingsTable(props:Props) {
 
     if (hasSearchFilter) {
       filteredMeetings = filteredMeetings.filter((meeting) =>
-        meeting.location.toLowerCase().includes(filterValue.toLowerCase()),
+        meeting.location.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
     if (subscriptionFilter) {
-      filteredMeetings = filteredMeetings.filter((meeting) => meeting.subscription);
+      filteredMeetings = filteredMeetings.filter(
+        (meeting) => meeting.subscription
+      );
     }
 
     return filteredMeetings;
@@ -108,61 +119,70 @@ export default function BookingsTable(props:Props) {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((meeting: Meeting, columnKey: React.Key) => {
-    const cellValue = meeting[columnKey as keyof Meeting];
+  const renderCell = React.useCallback(
+    (meeting: Meeting, columnKey: React.Key) => {
+      const cellValue = meeting[columnKey as keyof Meeting];
 
-    switch (columnKey) {
-      case "location":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              <InfoMeetingModal details={meeting.details}/>
-              {cellValue}
-            </p>
-          </div>
-        );
-      case "duration":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "starTime":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "date":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
+      switch (columnKey) {
+        case "location":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">
+                <InfoMeetingModal details={meeting.details} />
+                {cellValue}
+              </p>
+            </div>
+          );
+        case "duration":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case "starTime":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case "date":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
         case "subscription":
           return (
             <div className="flex justify-center w-1/3">
-              <FontAwesomeIcon color="gray" size="lg" icon={cellValue ? faSquareCheck : faSquare}/>
+              <FontAwesomeIcon
+                color="gray"
+                size="lg"
+                icon={cellValue ? faSquareCheck : faSquare}
+              />
             </div>
           );
-      case "actions":
-        return (
-          <div className="flex">
-            <div className="relative flex items-center">
-              <BookMeetingModal/>
+        case "actions":
+          return (
+            <div className="flex">
+              <div className="relative flex items-center">
+                <BookMeetingModal />
+              </div>
             </div>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
-  
+          );
+        default:
+          return cellValue;
+      }
+    },
+    []
+  );
 
-  const onRowsPerPageChange = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
-  }, []);
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    []
+  );
 
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -184,18 +204,22 @@ export default function BookingsTable(props:Props) {
             }}
             placeholder="Search by location..."
             size="sm"
-            startContent={<FontAwesomeIcon icon={faMagnifyingGlass}/>}
+            startContent={<FontAwesomeIcon icon={faMagnifyingGlass} />}
             value={filterValue}
             variant="underlined"
             onClear={() => setFilterValue("")}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Checkbox onChange={() => setsubscriptionFilter(!subscriptionFilter)}>Subscriptions Only</Checkbox>
+            <Checkbox
+              onChange={() => setsubscriptionFilter(!subscriptionFilter)}
+            >
+              Subscriptions Only
+            </Checkbox>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
-                  endContent={<FontAwesomeIcon icon={faChevronDown}/>}
+                  endContent={<FontAwesomeIcon icon={faChevronDown} />}
                   size="sm"
                   variant="flat"
                 >
@@ -210,17 +234,21 @@ export default function BookingsTable(props:Props) {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {columns.filter(column => column.uid !== "actions").map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
+                {columns
+                  .filter((column) => column.uid !== "actions")
+                  .map((column) => (
+                    <DropdownItem key={column.uid} className="capitalize">
+                      {capitalize(column.name)}
+                    </DropdownItem>
+                  ))}
               </DropdownMenu>
             </Dropdown>
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {meetings.length} meetings</span>
+          <span className="text-default-400 text-small">
+            Total {meetings.length} meetings
+          </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -291,7 +319,9 @@ export default function BookingsTable(props:Props) {
       <TableBody emptyContent={"No meetings found"} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
           </TableRow>
         )}
       </TableBody>

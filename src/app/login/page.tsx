@@ -1,45 +1,51 @@
-import React from 'react'
-import {Card, CardHeader, CardBody, Divider, Input, Button, Link, Image} from "@nextui-org/react";
+import React from "react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Divider,
+  Input,
+  Button,
+  Link,
+  Image,
+} from "@nextui-org/react";
 
-type Props = {}
+type Props = {};
 
 export default function Login({}: Props) {
   return (
-    <div className='flex flex-col items-center'>
+    <div className="flex flex-col items-center">
       <Image
         removeWrapper
         src="https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Hands-PNG/Handshake_Transparent_PNG_Clip_Art_Image.png?m=1507172105"
-        alt='Logo'
+        alt="Logo"
         width={80}
-        className='my-10'
-      />      
+        className="my-10"
+      />
       <Card className="w-4/5 aspect-square min-[400px]:aspect-auto max-w-xl mx-auto mb-auto p-2">
-        <CardHeader className='flex justify-center'>
-          <h1 className='text-2xl font-bold'>LOGIN</h1>
+        <CardHeader className="flex justify-center">
+          <h1 className="text-2xl font-bold">LOGIN</h1>
         </CardHeader>
         <CardBody className="flex items-center overflow-visible">
-          <div className='w-10/12 text-center flex flex-col'>
-            <Input 
-              type="email" 
-              variant="underlined" 
-              label="Email" 
+          <div className="w-10/12 text-center flex flex-col">
+            <Input type="email" variant="underlined" label="Email" isRequired />
+            <Divider className="m-2 invisible" />
+            <Input
+              type="password"
+              variant="underlined"
+              label="Password"
               isRequired
             />
-            <Divider className='m-2 invisible'/>
-            <Input 
-              type="password" 
-              variant="underlined" 
-              label="Password" 
-              isRequired
-            />
-            <Divider className='m-2 invisible'/>
-            <div className='flex flex-col items-center justify-center'>
-              <Button radius='sm' className='w-1/2'>Submit</Button>
+            <Divider className="m-2 invisible" />
+            <div className="flex flex-col items-center justify-center">
+              <Button radius="sm" className="w-1/2">
+                Submit
+              </Button>
               <Link href="/Register">or Sign In</Link>
             </div>
           </div>
         </CardBody>
       </Card>
     </div>
-  )
+  );
 }

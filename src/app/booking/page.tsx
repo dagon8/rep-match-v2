@@ -1,20 +1,20 @@
-'use client'
-import React from 'react'
-import NavBar from '../components/NavBar';
-import BookingsTable from '../components/BookingsTable';
-import { columns, meetings } from './bookingData';
+"use client";
+import React from "react";
+import NavBar from "../components/NavBar";
+import BookingsTable from "../components/BookingsTable";
+import { columns, meetings } from "./bookingData";
 
-type Props = {}
+type Props = {};
 
 export default function Booking({}: Props) {
   return (
     <>
-      <NavBar pageName='Booking'/>
-      <div className='py-24'>
-        <div className='container m-auto'>
-          <BookingsTable columns={columns} meetings={meetings}/>  
+      <NavBar pageName="Booking" />
+      <div className="py-24">
+        <div className="container m-auto">
+          <BookingsTable columns={columns} meetings={meetings} />
         </div>
       </div>
     </>
-  )
+  );
 }

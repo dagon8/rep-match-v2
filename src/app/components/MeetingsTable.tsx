@@ -18,48 +18,56 @@ import {
   ChipProps,
   SortDescriptor,
 } from "@nextui-org/react";
-import { faEllipsisH } from "@fortawesome/free-solid-svg-icons/faEllipsisH";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
-import CancelMeetingModal from "./CancelMeetingModal"
-import InfoMeetingModal from "./InfoMeetingModal"
+import CancelMeetingModal from "./CancelMeetingModal";
+import InfoMeetingModal from "./InfoMeetingModal";
 
-function capitalize(str:string) {
+function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["location", "startTime", "date", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "location",
+  "startTime",
+  "date",
+  "status",
+  "actions",
+];
 
 type Props = {
   columns: {
-    name: string,
-    uid: string,
-    sortable?: boolean}[]
+    name: string;
+    uid: string;
+    sortable?: boolean;
+  }[];
   statusOptions: {
-    name: string, 
-    uid: string
-  }[]
-  statusColorMap:  Record<string, ChipProps["color"]> 
+    name: string;
+    uid: string;
+  }[];
+  statusColorMap: Record<string, ChipProps["color"]>;
   meetings: {
-    location: string,
-    status: string,
-    startTime: string,
-    duration: string,
-    date: string,
-    details: string,
-    id: number
-  }[]
-}
+    location: string;
+    status: string;
+    startTime: string;
+    duration: string;
+    date: string;
+    details: string;
+    id: number;
+  }[];
+};
 
-export default function MeetingsTable(props:Props) {
+export default function MeetingsTable(props: Props) {
   //destructure prop values
-  const {columns, statusOptions, meetings, statusColorMap} = props
-  type Meeting = typeof meetings[0];
+  const { columns, statusOptions, meetings, statusColorMap } = props;
+  type Meeting = (typeof meetings)[0];
 
   //set states
   const [filterValue, setFilterValue] = React.useState("");
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+    new Set(INITIAL_VISIBLE_COLUMNS)
+  );
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
@@ -75,7 +83,9 @@ export default function MeetingsTable(props:Props) {
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid)
+    );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -83,12 +93,15 @@ export default function MeetingsTable(props:Props) {
 
     if (hasSearchFilter) {
       filteredMeetings = filteredMeetings.filter((meeting) =>
-        meeting.location.toLowerCase().includes(filterValue.toLowerCase()),
+        meeting.location.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
+    if (
+      statusFilter !== "all" &&
+      Array.from(statusFilter).length !== statusOptions.length
+    ) {
       filteredMeetings = filteredMeetings.filter((meeting) =>
-        Array.from(statusFilter).includes(meeting.status),
+        Array.from(statusFilter).includes(meeting.status)
       );
     }
 
@@ -112,66 +125,71 @@ export default function MeetingsTable(props:Props) {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((meeting: Meeting, columnKey: React.Key) => {
-    const cellValue = meeting[columnKey as keyof Meeting];
+  const renderCell = React.useCallback(
+    (meeting: Meeting, columnKey: React.Key) => {
+      const cellValue = meeting[columnKey as keyof Meeting];
 
-    switch (columnKey) {
-      case "location":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              <InfoMeetingModal details={meeting.details}/>
-              {cellValue}
-            </p>
-          </div>
-        );
-      case "duration":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "starTime":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "date":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip
-            className="capitalize border-none gap-1 text-default-600"
-            color={statusColorMap[meeting.status]}
-            size="sm"
-            variant="dot"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="flex">
-            <div className="relative flex items-center">
-              <CancelMeetingModal status={meeting.status}/>
+      switch (columnKey) {
+        case "location":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">
+                <InfoMeetingModal details={meeting.details} />
+                {cellValue}
+              </p>
             </div>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
-  
+          );
+        case "duration":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case "starTime":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case "date":
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case "status":
+          return (
+            <Chip
+              className="capitalize border-none gap-1 text-default-600"
+              color={statusColorMap[meeting.status]}
+              size="sm"
+              variant="dot"
+            >
+              {cellValue}
+            </Chip>
+          );
+        case "actions":
+          return (
+            <div className="flex">
+              <div className="relative flex items-center">
+                <CancelMeetingModal status={meeting.status} />
+              </div>
+            </div>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    []
+  );
 
-  const onRowsPerPageChange = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
-  }, []);
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    []
+  );
 
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -193,7 +211,7 @@ export default function MeetingsTable(props:Props) {
             }}
             placeholder="Search by location..."
             size="sm"
-            startContent={<FontAwesomeIcon icon={faMagnifyingGlass}/>}
+            startContent={<FontAwesomeIcon icon={faMagnifyingGlass} />}
             value={filterValue}
             variant="underlined"
             onClear={() => setFilterValue("")}
@@ -203,7 +221,7 @@ export default function MeetingsTable(props:Props) {
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
-                  endContent={<FontAwesomeIcon icon={faChevronDown}/>}
+                  endContent={<FontAwesomeIcon icon={faChevronDown} />}
                   size="sm"
                   variant="flat"
                 >
@@ -228,7 +246,7 @@ export default function MeetingsTable(props:Props) {
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
-                  endContent={<FontAwesomeIcon icon={faChevronDown}/>}
+                  endContent={<FontAwesomeIcon icon={faChevronDown} />}
                   size="sm"
                   variant="flat"
                 >
@@ -243,17 +261,21 @@ export default function MeetingsTable(props:Props) {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {columns.filter(column => column.uid !== "actions").map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
+                {columns
+                  .filter((column) => column.uid !== "actions")
+                  .map((column) => (
+                    <DropdownItem key={column.uid} className="capitalize">
+                      {capitalize(column.name)}
+                    </DropdownItem>
+                  ))}
               </DropdownMenu>
             </Dropdown>
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {meetings.length} meetings</span>
+          <span className="text-default-400 text-small">
+            Total {meetings.length} meetings
+          </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -324,7 +346,9 @@ export default function MeetingsTable(props:Props) {
       <TableBody emptyContent={"No meetings found"} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
           </TableRow>
         )}
       </TableBody>
