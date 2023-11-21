@@ -1,11 +1,16 @@
+"use client"
 import React from 'react'
-import {Card, CardHeader, CardBody, Divider, Input, Button, Textarea, Link, Image} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, Divider, Input, Button, Textarea, Link, Image, CardFooter, Pagination} from "@nextui-org/react";
 
 type Props = {}
 
 export default function Register({}: Props) {
+  const [page, setPage] = React.useState()
+
+
+
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col items-center mb-8'>
       <Image
         removeWrapper
         src="https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Hands-PNG/Handshake_Transparent_PNG_Clip_Art_Image.png?m=1507172105"
@@ -19,6 +24,28 @@ export default function Register({}: Props) {
         </CardHeader>
         <CardBody className="flex items-center overflow-visible">
           <div className='w-10/12 text-center flex flex-col'>
+            <div className='flex flex-row gap-1'>
+              <Input 
+                type="text" 
+                variant="underlined" 
+                label="First name" 
+                isRequired
+              />
+              <Input 
+                type="text" 
+                variant="underlined" 
+                label="Last name" 
+                isRequired
+              />
+            </div>
+            <Divider className='m-2 invisible'/>
+            <Input 
+              type="tel" 
+              variant="underlined" 
+              label="Phone Number" 
+              isRequired
+            />
+            <Divider className='m-2 invisible'/>
             <Input 
               type="email" 
               variant="underlined" 
@@ -45,6 +72,9 @@ export default function Register({}: Props) {
             </div>
           </div>
         </CardBody>
+        {/* <CardFooter className='flex justify-center'>
+          <Pagination loop showControls color="primary" total={3} initialPage={1} />
+        </CardFooter> */}
       </Card>
     </div>
   )
