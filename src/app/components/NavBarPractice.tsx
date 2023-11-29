@@ -25,10 +25,10 @@ export default function NavBar(props: Props) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
-    { name: "My Meetings", page: "/MyMeetings" },
-    { name: "Subscriptions", page: "/Subscriptions" },
-    { name: "Booking", page: "/Booking" },
-    { name: "Messages", page: "/Messages" },
+    { name: "My Meetings", page: "/MyMeetingsPractice" },
+    { name: "Subscriptions", page: "/SubscriptionsPractice" },
+    { name: "Create Meeting", page: "/CreateMeetingPractice" },
+    { name: "Messages", page: "/MessagesPractice" },
   ];
 
   return (

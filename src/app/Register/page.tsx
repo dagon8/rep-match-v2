@@ -53,6 +53,13 @@ export default function Register({}: Props) {
               label="Phone Number"
               isRequired
             />
+                        <Divider className="m-2 invisible" />
+            <Input
+              type="tel"
+              variant="underlined"
+              label="Company"
+              isRequired
+            />
             <Divider className="m-2 invisible" />
             <Input type="email" variant="underlined" label="Email" isRequired />
             <Divider className="m-2 invisible" />
