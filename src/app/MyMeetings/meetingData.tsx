@@ -25,7 +25,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 const meetings = [
   {
-    location: "27562 Bode Junction",
+    location: "27562 Valley Junction",
     status: "scheduled",
     startTime: "13:23:08",
     duration: "15 Mins",

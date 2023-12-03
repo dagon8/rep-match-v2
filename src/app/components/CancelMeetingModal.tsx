@@ -20,7 +20,7 @@ export default function CancelMeetingModal(props: Props) {
   return (
     <>
       <Button
-        isDisabled={status === "canceled" ? true : false}
+        isDisabled={["canceled", "finished", "ongoing"].includes(status) ? true : false}
         size="sm"
         onPress={onOpen}
         color="danger"

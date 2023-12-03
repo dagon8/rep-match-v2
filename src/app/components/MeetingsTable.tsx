@@ -65,6 +65,7 @@ export default function MeetingsTable(props: Props) {
 
   //set states
   const [filterValue, setFilterValue] = React.useState("");
+  const [filterDate, setFilterDate] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
@@ -79,6 +80,7 @@ export default function MeetingsTable(props: Props) {
   const pages = Math.ceil(meetings.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
+  const hasDateFilter = Boolean(filterDate);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -96,6 +98,11 @@ export default function MeetingsTable(props: Props) {
         meeting.location.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
+    if (hasDateFilter) {
+      filteredMeetings = filteredMeetings.filter((meeting) =>
+        meeting.date.toLowerCase().includes(filterDate.toLowerCase())
+      );
+    }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
@@ -106,7 +113,7 @@ export default function MeetingsTable(props: Props) {
     }
 
     return filteredMeetings;
-  }, [meetings, filterValue, statusFilter]);
+  }, [meetings, filterValue, filterDate, statusFilter]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -200,6 +207,15 @@ export default function MeetingsTable(props: Props) {
     }
   }, []);
 
+  const onDateChange = React.useCallback((value?: string) => {
+    if (value) {
+      setFilterDate(value);
+      setPage(1);
+    } else {
+      setFilterDate("");
+    }
+  }, []);
+
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -217,7 +233,19 @@ export default function MeetingsTable(props: Props) {
             onClear={() => setFilterValue("")}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
+          <div className="flex gap-2">
+            <Input
+              type="date"
+              size="sm"
+              classNames={{
+                inputWrapper: "m-0 h-8",
+              }}
+              isClearable
+              value={filterDate}
+              onClear={() => setFilterDate("")}
+              onValueChange={onDateChange}
+              className="invisible sm:visible sm:flex sm:items-end sm:justify-end"
+            />
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -244,7 +272,7 @@ export default function MeetingsTable(props: Props) {
               </DropdownMenu>
             </Dropdown>
             <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
+              <DropdownTrigger className="hidden sm:flex px-6">
                 <Button
                   endContent={<FontAwesomeIcon icon={faChevronDown} />}
                   size="sm"
@@ -293,12 +321,15 @@ export default function MeetingsTable(props: Props) {
     );
   }, [
     filterValue,
+    filterDate,
     statusFilter,
     visibleColumns,
     onSearchChange,
+    onDateChange,
     onRowsPerPageChange,
     meetings.length,
     hasSearchFilter,
+    hasDateFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -310,7 +341,7 @@ export default function MeetingsTable(props: Props) {
             cursor: "bg-foreground text-background",
           }}
           color="default"
-          isDisabled={hasSearchFilter}
+          isDisabled={hasSearchFilter || hasDateFilter}
           page={page}
           total={pages}
           variant="light"
@@ -318,7 +349,7 @@ export default function MeetingsTable(props: Props) {
         />
       </div>
     );
-  }, [items.length, page, pages, hasSearchFilter]);
+  }, [items.length, page, pages, hasSearchFilter, hasDateFilter]);
 
   return (
     <Table

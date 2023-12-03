@@ -44,7 +44,6 @@ export default function App() {
   return (
     <>
        <Button
-        isDisabled={status === "canceled" ? true : false}
         size="sm"
         onPress={onOpen}
         color="default"
