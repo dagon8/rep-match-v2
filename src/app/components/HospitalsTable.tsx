@@ -23,16 +23,17 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyin
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import CancelMeetingModal from "./CancelMeetingModal";
 import InfoMeetingModal from "./InfoModal";
+import UnsubscribeModal from "./UnsubscribeModal";
+import SubscribeModal from "./SubscribeModal";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "location",
-  "startTime",
+  "hospitalName",
   "date",
-  "status",
+//   "status",
   "actions",
 ];
 
@@ -42,30 +43,26 @@ type Props = {
     uid: string;
     sortable?: boolean;
   }[];
-  statusOptions: {
+  statusOptions?: {
     name: string;
     uid: string;
   }[];
-  statusColorMap: Record<string, ChipProps["color"]>;
+  statusColorMap?: Record<string, ChipProps["color"]>;
   meetings: {
-    location: string;
+    hospitalName: string;
     status: string;
-    startTime: string;
-    duration: string;
-    date: string;
     details: string;
     id: number;
   }[];
 };
 
-export default function MeetingsTable(props: Props) {
+export default function HospitalsTable(props: Props) {
   //destructure prop values
   const { columns, statusOptions, meetings, statusColorMap } = props;
   type Meeting = (typeof meetings)[0];
 
   //set states
   const [filterValue, setFilterValue] = React.useState("");
-  const [filterDate, setFilterDate] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
@@ -80,7 +77,6 @@ export default function MeetingsTable(props: Props) {
   const pages = Math.ceil(meetings.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
-  const hasDateFilter = Boolean(filterDate);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -95,25 +91,20 @@ export default function MeetingsTable(props: Props) {
 
     if (hasSearchFilter) {
       filteredMeetings = filteredMeetings.filter((meeting) =>
-        meeting.location.toLowerCase().includes(filterValue.toLowerCase())
+        meeting.hospitalName.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (hasDateFilter) {
-      filteredMeetings = filteredMeetings.filter((meeting) =>
-        meeting.date.toLowerCase().includes(filterDate.toLowerCase())
-      );
-    }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredMeetings = filteredMeetings.filter((meeting) =>
-        Array.from(statusFilter).includes(meeting.status)
-      );
-    }
+    // if (
+    //   statusFilter !== "all" &&
+    //   Array.from(statusFilter).length !== statusOptions.length
+    // ) {
+    //   filteredMeetings = filteredMeetings.filter((meeting) =>
+    //     Array.from(statusFilter).includes(meeting.status)
+    //   );
+    // }
 
     return filteredMeetings;
-  }, [meetings, filterValue, filterDate, statusFilter]);
+  }, [meetings, filterValue, statusFilter]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -137,7 +128,7 @@ export default function MeetingsTable(props: Props) {
       const cellValue = meeting[columnKey as keyof Meeting];
 
       switch (columnKey) {
-        case "location":
+        case "hospitalName":
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">
@@ -146,40 +137,22 @@ export default function MeetingsTable(props: Props) {
               </p>
             </div>
           );
-        case "duration":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-            </div>
-          );
-        case "startTime":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-            </div>
-          );
-        case "date":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-            </div>
-          );
-        case "status":
-          return (
-            <Chip
-              className="capitalize border-none gap-1 text-default-600"
-              color={statusColorMap[meeting.status]}
-              size="sm"
-              variant="dot"
-            >
-              {cellValue}
-            </Chip>
-          );
+        // case "status":
+        //   return (
+        //     <Chip
+        //       className="capitalize border-none gap-1 text-default-600"
+        //       color={statusColorMap[meeting.status]}
+        //       size="sm"
+        //       variant="dot"
+        //     >
+        //       {cellValue}
+        //     </Chip>
+        //   );
         case "actions":
           return (
             <div className="flex">
               <div className="relative flex items-center">
-                <CancelMeetingModal status={meeting.status} />
+                <SubscribeModal/>
               </div>
             </div>
           );
@@ -207,15 +180,6 @@ export default function MeetingsTable(props: Props) {
     }
   }, []);
 
-  const onDateChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterDate(value);
-      setPage(1);
-    } else {
-      setFilterDate("");
-    }
-  }, []);
-
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -225,7 +189,7 @@ export default function MeetingsTable(props: Props) {
             classNames={{
               base: "w-full sm:max-w-[44%]",
             }}
-            placeholder="Search by location..."
+            placeholder="Search by hospital name..."
             size="sm"
             startContent={<FontAwesomeIcon icon={faMagnifyingGlass} />}
             value={filterValue}
@@ -234,19 +198,7 @@ export default function MeetingsTable(props: Props) {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-2">
-            <Input
-              type="date"
-              size="sm"
-              classNames={{
-                inputWrapper: "m-0 h-8",
-              }}
-              isClearable
-              value={filterDate}
-              onClear={() => setFilterDate("")}
-              onValueChange={onDateChange}
-              className="invisible sm:visible sm:flex sm:items-end sm:justify-end"
-            />
-            <Dropdown>
+            {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<FontAwesomeIcon icon={faChevronDown} />}
@@ -297,7 +249,7 @@ export default function MeetingsTable(props: Props) {
                     </DropdownItem>
                   ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -321,15 +273,12 @@ export default function MeetingsTable(props: Props) {
     );
   }, [
     filterValue,
-    filterDate,
     statusFilter,
     visibleColumns,
     onSearchChange,
-    onDateChange,
     onRowsPerPageChange,
     meetings.length,
     hasSearchFilter,
-    hasDateFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -341,7 +290,7 @@ export default function MeetingsTable(props: Props) {
             cursor: "bg-foreground text-background",
           }}
           color="default"
-          isDisabled={hasSearchFilter || hasDateFilter}
+          isDisabled={hasSearchFilter}
           page={page}
           total={pages}
           variant="light"
@@ -349,7 +298,7 @@ export default function MeetingsTable(props: Props) {
         />
       </div>
     );
-  }, [items.length, page, pages, hasSearchFilter, hasDateFilter]);
+  }, [items.length, page, pages, hasSearchFilter]);
 
   return (
     <Table

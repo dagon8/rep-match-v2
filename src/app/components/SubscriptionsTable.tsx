@@ -23,14 +23,14 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyin
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import CancelMeetingModal from "./CancelMeetingModal";
 import InfoMeetingModal from "./InfoModal";
+import UnsubscribeModal from "./UnsubscribeModal";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "location",
-  "startTime",
+  "subscriptionName",
   "date",
   "status",
   "actions",
@@ -48,24 +48,20 @@ type Props = {
   }[];
   statusColorMap: Record<string, ChipProps["color"]>;
   meetings: {
-    location: string;
+    subscriptionName: string;
     status: string;
-    startTime: string;
-    duration: string;
-    date: string;
     details: string;
     id: number;
   }[];
 };
 
-export default function MeetingsTable(props: Props) {
+export default function SubscriptionsTable(props: Props) {
   //destructure prop values
   const { columns, statusOptions, meetings, statusColorMap } = props;
   type Meeting = (typeof meetings)[0];
 
   //set states
   const [filterValue, setFilterValue] = React.useState("");
-  const [filterDate, setFilterDate] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
@@ -80,7 +76,6 @@ export default function MeetingsTable(props: Props) {
   const pages = Math.ceil(meetings.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
-  const hasDateFilter = Boolean(filterDate);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -95,12 +90,7 @@ export default function MeetingsTable(props: Props) {
 
     if (hasSearchFilter) {
       filteredMeetings = filteredMeetings.filter((meeting) =>
-        meeting.location.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
-    if (hasDateFilter) {
-      filteredMeetings = filteredMeetings.filter((meeting) =>
-        meeting.date.toLowerCase().includes(filterDate.toLowerCase())
+        meeting.subscriptionName.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
@@ -113,7 +103,7 @@ export default function MeetingsTable(props: Props) {
     }
 
     return filteredMeetings;
-  }, [meetings, filterValue, filterDate, statusFilter]);
+  }, [meetings, filterValue, statusFilter]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -137,31 +127,13 @@ export default function MeetingsTable(props: Props) {
       const cellValue = meeting[columnKey as keyof Meeting];
 
       switch (columnKey) {
-        case "location":
+        case "subscriptionName":
           return (
             <div className="flex flex-col">
               <p className="text-bold text-small capitalize">
                 <InfoMeetingModal details={meeting.details} />
                 {cellValue}
               </p>
-            </div>
-          );
-        case "duration":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-            </div>
-          );
-        case "startTime":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-            </div>
-          );
-        case "date":
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
             </div>
           );
         case "status":
@@ -179,7 +151,7 @@ export default function MeetingsTable(props: Props) {
           return (
             <div className="flex">
               <div className="relative flex items-center">
-                <CancelMeetingModal status={meeting.status} />
+                <UnsubscribeModal status={meeting.status} />
               </div>
             </div>
           );
@@ -207,15 +179,6 @@ export default function MeetingsTable(props: Props) {
     }
   }, []);
 
-  const onDateChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterDate(value);
-      setPage(1);
-    } else {
-      setFilterDate("");
-    }
-  }, []);
-
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -225,7 +188,7 @@ export default function MeetingsTable(props: Props) {
             classNames={{
               base: "w-full sm:max-w-[44%]",
             }}
-            placeholder="Search by location..."
+            placeholder="Search by subscription name..."
             size="sm"
             startContent={<FontAwesomeIcon icon={faMagnifyingGlass} />}
             value={filterValue}
@@ -234,18 +197,6 @@ export default function MeetingsTable(props: Props) {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-2">
-            <Input
-              type="date"
-              size="sm"
-              classNames={{
-                inputWrapper: "m-0 h-8",
-              }}
-              isClearable
-              value={filterDate}
-              onClear={() => setFilterDate("")}
-              onValueChange={onDateChange}
-              className="invisible sm:visible sm:flex sm:items-end sm:justify-end"
-            />
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -321,15 +272,12 @@ export default function MeetingsTable(props: Props) {
     );
   }, [
     filterValue,
-    filterDate,
     statusFilter,
     visibleColumns,
     onSearchChange,
-    onDateChange,
     onRowsPerPageChange,
     meetings.length,
     hasSearchFilter,
-    hasDateFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -341,7 +289,7 @@ export default function MeetingsTable(props: Props) {
             cursor: "bg-foreground text-background",
           }}
           color="default"
-          isDisabled={hasSearchFilter || hasDateFilter}
+          isDisabled={hasSearchFilter}
           page={page}
           total={pages}
           variant="light"
@@ -349,7 +297,7 @@ export default function MeetingsTable(props: Props) {
         />
       </div>
     );
-  }, [items.length, page, pages, hasSearchFilter, hasDateFilter]);
+  }, [items.length, page, pages, hasSearchFilter]);
 
   return (
     <Table

@@ -7,42 +7,42 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Tooltip,
 } from "@nextui-org/react";
-import { faInfo } from "@fortawesome/free-solid-svg-icons/faInfo";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type Props = {
-  details: string;
+  status: string;
 };
 
-export default function InfoMeetingModal(props: Props) {
+export default function UnsubscribeModal(props: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { status } = props;
 
   return (
     <>
-      <Tooltip size="sm" onClick={onOpen} content="Meeting details">
-        <Button
-          size="sm"
-          onPress={onOpen}
-          isIconOnly
-          variant="light"
-          aria-label="cancel"
-        >
-          <FontAwesomeIcon color="gray" icon={faInfo} />
-        </Button>
-      </Tooltip>
+      <Button
+        isDisabled={["canceled"].includes(status) ? true : false}
+        size="sm"
+        onPress={onOpen}
+        color="danger"
+        variant="light"
+        aria-label="cancel"
+      >
+        Unsubscribe
+      </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Meeting details
+                Cancel subscription?
               </ModalHeader>
               <ModalBody>
-                <p>{props.details}</p>
+                <p>This subscription will be cancelled if you accept</p>
               </ModalBody>
               <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Accept
+                </Button>
                 <Button color="primary" onPress={onClose}>
                   Dismiss
                 </Button>

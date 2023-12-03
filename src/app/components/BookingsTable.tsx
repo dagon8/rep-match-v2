@@ -23,7 +23,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { faSquareCheck } from "@fortawesome/free-regular-svg-icons/faSquareCheck";
 import BookMeetingModal from "./BookMeetingModal";
-import InfoMeetingModal from "./InfoMeetingModal";
+import InfoMeetingModal from "./InfoModal";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);

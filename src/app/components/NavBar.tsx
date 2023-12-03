@@ -38,13 +38,13 @@ export default function NavBar(props: Props) {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
-        <Image
-          removeWrapper
-          src="https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Hands-PNG/Handshake_Transparent_PNG_Clip_Art_Image.png?m=1507172105"
-          alt="Logo"
-          width={30}
-        />
-        <NavbarBrand>
+        <NavbarBrand className="flex flex-row gap-4 items-center justify-start">
+          <Image
+            removeWrapper
+            src="/rep-match-logo-cropped.svg"
+            alt="Logo"
+            width={40}
+          />
           <p className="font-bold text-inherit">REPMATCH</p>
         </NavbarBrand>
       </NavbarContent>
@@ -75,7 +75,7 @@ export default function NavBar(props: Props) {
               color="primary"
               name="Jason Hughes"
               size="sm"
-              src="https://api.dicebear.com/7.x/lorelei/svg"
+              src="https://cdn.iconscout.com/icon/free/png-512/free-user-1912184-1617653.png?f=webp&w=256"
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
