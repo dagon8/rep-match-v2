@@ -15,6 +15,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Avatar,
+  Button,
 } from "@nextui-org/react";
 
 type Props = {
@@ -73,17 +74,17 @@ export default function NavBar(props: Props) {
               as="button"
               className="transition-transform"
               color="primary"
-              name="Jason Hughes"
               size="sm"
-              src="https://cdn.iconscout.com/icon/free/png-512/free-user-1912184-1617653.png?f=webp&w=256"
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
+            <DropdownItem key="profile" className="h-14 gap-2 cursor-default">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">admin@test.com</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem key="settings" href="/User">
+                Settings
+            </DropdownItem>
             <DropdownItem key="logout" color="danger" href="/Login">
               Logout
             </DropdownItem>
