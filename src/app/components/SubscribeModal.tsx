@@ -9,8 +9,18 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-export default function SubscribeModal() {
+type Props = {
+  itemId: number
+};
+
+export default function SubscribeModal(props: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { itemId } = props
+  
+  function handleSubscribe(){
+      //Do something here to subscribe
+      console.log("hospital_id: ", itemId)
+  }
 
   return (
     <>
@@ -34,7 +44,7 @@ export default function SubscribeModal() {
                 <p>You'll subscribe to this hospital if you accept</p>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" variant="light" onPress={onClose}>
+                <Button onClick={() => handleSubscribe()} color="primary" variant="light" onPress={onClose}>
                   Accept
                 </Button>
                 <Button color="primary" onPress={onClose}>

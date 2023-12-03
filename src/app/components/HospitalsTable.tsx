@@ -152,7 +152,7 @@ export default function HospitalsTable(props: Props) {
           return (
             <div className="flex">
               <div className="relative flex items-center">
-                <SubscribeModal/>
+                <SubscribeModal itemId={meeting.id}/>
               </div>
             </div>
           );

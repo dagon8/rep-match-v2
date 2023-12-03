@@ -11,11 +11,17 @@ import {
 
 type Props = {
   status: string;
+  itemId: number;
 };
 
 export default function CancelMeetingModal(props: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { status } = props;
+  const { status, itemId } = props;
+
+  function handleCancel(){
+    //Do something here to cancel meeting
+    console.log("meeting_id: ", itemId)
+  }
 
   return (
     <>
@@ -40,7 +46,7 @@ export default function CancelMeetingModal(props: Props) {
                 <p>This meeting will be cancelled if you accept</p>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button onClick={() => handleCancel()} color="danger" variant="light" onPress={onClose}>
                   Accept
                 </Button>
                 <Button color="primary" onPress={onClose}>

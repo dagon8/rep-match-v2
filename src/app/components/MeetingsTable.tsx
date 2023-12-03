@@ -179,7 +179,7 @@ export default function MeetingsTable(props: Props) {
           return (
             <div className="flex">
               <div className="relative flex items-center">
-                <CancelMeetingModal status={meeting.status} />
+                <CancelMeetingModal itemId={meeting.id} status={meeting.status} />
               </div>
             </div>
           );

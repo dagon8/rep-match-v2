@@ -171,7 +171,7 @@ export default function BookingsTable(props: Props) {
           return (
             <div className="flex">
               <div className="relative flex items-center">
-                <BookMeetingModal />
+                <BookMeetingModal itemId={meeting.id}/>
               </div>
             </div>
           );

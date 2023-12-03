@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Card,
@@ -13,6 +14,15 @@ import {
 type Props = {};
 
 export default function Login({}: Props) {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  function handleSubmit() {
+    //Do something here to check login info is valid
+    console.log("Email: ", email);
+    console.log("Password: ", password);
+  }
+
   return (
     <div className="flex flex-col items-center">
       <Image
@@ -28,9 +38,18 @@ export default function Login({}: Props) {
         </CardHeader>
         <CardBody className="flex items-center overflow-visible">
           <div className="w-10/12 text-center flex flex-col">
-            <Input type="email" variant="underlined" label="Email" isRequired />
+            <Input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              variant="underlined"
+              label="Email"
+              isRequired
+            />
             <Divider className="m-2 invisible" />
             <Input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               variant="underlined"
               label="Password"
@@ -38,7 +57,11 @@ export default function Login({}: Props) {
             />
             <Divider className="m-2 invisible" />
             <div className="flex flex-col items-center justify-center">
-              <Button radius="sm" className="w-1/2">
+              <Button
+                radius="sm"
+                className="w-1/2"
+                onClick={() => handleSubmit()}
+              >
                 Submit
               </Button>
               <Link href="/Register">or Sign In</Link>

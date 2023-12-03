@@ -9,8 +9,19 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-export default function BookMeetingModal() {
+
+type Props = {
+  itemId: number
+};
+
+export default function BookMeetingModal(props: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { itemId } = props
+  
+  function handleBook(){
+      //Do something here to book meeting
+      console.log("meeting_id: ", itemId)
+  }
 
   return (
     <>
@@ -34,7 +45,7 @@ export default function BookMeetingModal() {
                 <p>This meeting will be booked if you accept</p>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" variant="light" onPress={onClose}>
+                <Button onClick={() => handleBook()} color="primary" variant="light" onPress={onClose}>
                   Accept
                 </Button>
                 <Button color="primary" onPress={onClose}>

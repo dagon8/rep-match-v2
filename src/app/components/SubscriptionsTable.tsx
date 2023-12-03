@@ -151,7 +151,7 @@ export default function SubscriptionsTable(props: Props) {
           return (
             <div className="flex">
               <div className="relative flex items-center">
-                <UnsubscribeModal status={meeting.status} />
+                <UnsubscribeModal itemId={meeting.id} status={meeting.status} />
               </div>
             </div>
           );
