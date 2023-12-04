@@ -10,43 +10,41 @@ import {
 } from "@nextui-org/react";
 
 type Props = {
-  status: string;
-  itemId: number;
+  itemId: number
 };
 
-export default function CancelMeetingModal(props: Props) {
+export default function SubscribeModal(props: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { status, itemId } = props;
-
-  function handleCancel(){
-    //Do something here to cancel meeting
-    console.log("meeting_id: ", itemId)
+  const { itemId } = props
+  
+  function handleSubscribe(){
+      //Do something here to subscribe
+      console.log("hospital_id: ", itemId)
   }
 
   return (
     <>
       <Button
-        isDisabled={["canceled", "finished", "ongoing"].includes(status) ? true : false}
         size="sm"
         onPress={onOpen}
-        color="danger"
+        color="primary"
         variant="light"
         aria-label="cancel"
       >
-        Cancel
+        Subscribe
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Cancel meeting?
+                Subscribe to hospital?
               </ModalHeader>
               <ModalBody>
-                <p>This meeting will be cancelled if you accept</p>
+                <p>You'll subscribe to this hospital if you accept</p>
               </ModalBody>
               <ModalFooter>
-                <Button onClick={() => handleCancel()} color="danger" variant="light" onPress={onClose}>
+                <Button onClick={() => handleSubscribe()} color="primary" variant="light" onPress={onClose}>
                   Accept
                 </Button>
                 <Button color="primary" onPress={onClose}>

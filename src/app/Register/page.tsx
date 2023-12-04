@@ -15,7 +15,24 @@ import {
 type Props = {};
 
 export default function Register({}: Props) {
-  const [page, setPage] = React.useState();
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [company, setCompany] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [bio, setBio] = React.useState("");
+
+  function handleSubmit() {
+    //Do something here to check registration info is valid
+    console.log("firstname: ", firstName);
+    console.log("lastname: ", lastName);
+    console.log("phone: ", phone);
+    console.log("company: ", company);
+    console.log("email: ", email);
+    console.log("password: ", password);
+    console.log("bio: ", bio);
+  }
 
   return (
     <div className="flex flex-col items-center mb-8">
@@ -34,12 +51,16 @@ export default function Register({}: Props) {
           <div className="w-10/12 text-center flex flex-col">
             <div className="flex flex-row gap-1">
               <Input
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 type="text"
                 variant="underlined"
                 label="First name"
                 isRequired
               />
               <Input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 type="text"
                 variant="underlined"
                 label="Last name"
@@ -48,22 +69,28 @@ export default function Register({}: Props) {
             </div>
             <Divider className="m-2 invisible" />
             <Input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               type="tel"
               variant="underlined"
               label="Phone Number"
               isRequired
             />
-                        <Divider className="m-2 invisible" />
+            <Divider className="m-2 invisible" />
             <Input
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
               type="tel"
               variant="underlined"
               label="Company"
               isRequired
             />
             <Divider className="m-2 invisible" />
-            <Input type="email" variant="underlined" label="Email" isRequired />
+            <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" variant="underlined" label="Email" isRequired />
             <Divider className="m-2 invisible" />
             <Input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               variant="underlined"
               label="Password"
@@ -71,13 +98,15 @@ export default function Register({}: Props) {
             />
             <Divider className="m-2 invisible" />
             <Textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
               variant="underlined"
               label="Bio"
               placeholder="Enter a bio"
             />
             <Divider className="m-2 invisible" />
             <div className="flex flex-col items-center justify-center">
-              <Button radius="sm" className="w-1/2">
+              <Button radius="sm" className="w-1/2" onClick={() => handleSubmit()}>
                 Submit
               </Button>
               <Link href="/Login">or Log in</Link>

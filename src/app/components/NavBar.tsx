@@ -15,6 +15,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Avatar,
+  Button,
 } from "@nextui-org/react";
 
 type Props = {
@@ -38,13 +39,13 @@ export default function NavBar(props: Props) {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
-        <Image
-          removeWrapper
-          src="https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Hands-PNG/Handshake_Transparent_PNG_Clip_Art_Image.png?m=1507172105"
-          alt="Logo"
-          width={30}
-        />
-        <NavbarBrand>
+        <NavbarBrand className="flex flex-row gap-4 items-center justify-start">
+          <Image
+            removeWrapper
+            src="/rep-match-logo-cropped.svg"
+            alt="Logo"
+            width={40}
+          />
           <p className="font-bold text-inherit">REPMATCH</p>
         </NavbarBrand>
       </NavbarContent>
@@ -73,17 +74,17 @@ export default function NavBar(props: Props) {
               as="button"
               className="transition-transform"
               color="primary"
-              name="Jason Hughes"
               size="sm"
-              src="https://api.dicebear.com/7.x/lorelei/svg"
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
+            <DropdownItem key="profile" className="h-14 gap-2 cursor-default">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">admin@test.com</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem key="settings" href="/User">
+                Settings
+            </DropdownItem>
             <DropdownItem key="logout" color="danger" href="/Login">
               Logout
             </DropdownItem>

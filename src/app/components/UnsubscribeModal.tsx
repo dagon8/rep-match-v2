@@ -11,42 +11,42 @@ import {
 
 type Props = {
   status: string;
-  itemId: number;
+  itemId: number
 };
 
-export default function CancelMeetingModal(props: Props) {
+export default function UnsubscribeModal(props: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { status, itemId } = props;
 
-  function handleCancel(){
-    //Do something here to cancel meeting
-    console.log("meeting_id: ", itemId)
+  function handleUnsubscribe(){
+    //Do somehting here to unsibscribe
+      console.log("subscription_id: ", itemId)
   }
 
   return (
     <>
       <Button
-        isDisabled={["canceled", "finished", "ongoing"].includes(status) ? true : false}
+        isDisabled={["canceled"].includes(status) ? true : false}
         size="sm"
         onPress={onOpen}
         color="danger"
         variant="light"
         aria-label="cancel"
       >
-        Cancel
+        Unsubscribe
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Cancel meeting?
+                Cancel subscription?
               </ModalHeader>
               <ModalBody>
-                <p>This meeting will be cancelled if you accept</p>
+                <p>This subscription will be cancelled if you accept</p>
               </ModalBody>
               <ModalFooter>
-                <Button onClick={() => handleCancel()} color="danger" variant="light" onPress={onClose}>
+                <Button onClick={() => handleUnsubscribe()} color="danger" variant="light" onPress={onClose}>
                   Accept
                 </Button>
                 <Button color="primary" onPress={onClose}>

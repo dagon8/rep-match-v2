@@ -23,7 +23,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { faSquareCheck } from "@fortawesome/free-regular-svg-icons/faSquareCheck";
 import BookMeetingModal from "./BookMeetingModal";
-import InfoMeetingModal from "./InfoMeetingModal";
+import InfoMeetingModal from "./InfoModal";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -61,7 +61,8 @@ export default function BookingsTable(props: Props) {
 
   //set states
   const [filterValue, setFilterValue] = React.useState("");
-  const [subscriptionFilter, setsubscriptionFilter] = React.useState(false);
+  const [filterDate, setFilterDate] = React.useState("");
+  const [subscriptionFilter, setSubscriptionFilter] = React.useState(false);
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
@@ -75,6 +76,7 @@ export default function BookingsTable(props: Props) {
   const pages = Math.ceil(meetings.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
+  const hasDateFilter = Boolean(filterDate);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -92,7 +94,11 @@ export default function BookingsTable(props: Props) {
         meeting.location.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-
+    if (hasDateFilter) {
+      filteredMeetings = filteredMeetings.filter((meeting) =>
+        meeting.date.toLowerCase().includes(filterDate.toLowerCase())
+      );
+    }
     if (subscriptionFilter) {
       filteredMeetings = filteredMeetings.filter(
         (meeting) => meeting.subscription
@@ -100,7 +106,7 @@ export default function BookingsTable(props: Props) {
     }
 
     return filteredMeetings;
-  }, [meetings, filterValue, subscriptionFilter]);
+  }, [meetings, filterValue, filterDate, subscriptionFilter]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -165,7 +171,7 @@ export default function BookingsTable(props: Props) {
           return (
             <div className="flex">
               <div className="relative flex items-center">
-                <BookMeetingModal />
+                <BookMeetingModal itemId={meeting.id}/>
               </div>
             </div>
           );
@@ -193,6 +199,15 @@ export default function BookingsTable(props: Props) {
     }
   }, []);
 
+  const onDateChange = React.useCallback((value?: string) => {
+    if (value) {
+      setFilterDate(value);
+      setPage(1);
+    } else {
+      setFilterDate("");
+    }
+  }, []);
+
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -210,14 +225,26 @@ export default function BookingsTable(props: Props) {
             onClear={() => setFilterValue("")}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
+          <div className="flex flex-grow justify-end items-center gap-2">
             <Checkbox
-              onChange={() => setsubscriptionFilter(!subscriptionFilter)}
+              onChange={() => setSubscriptionFilter(!subscriptionFilter)}
             >
               Subscriptions Only
             </Checkbox>
+            <Input
+              type="date"
+              size="sm"
+              classNames={{
+                inputWrapper: "m-0 h-8",
+              }}
+              isClearable
+              value={filterDate}
+              onClear={() => setFilterDate("")}
+              onValueChange={onDateChange}
+              className="invisible sm:visible sm:flex sm:items-end sm:justify-end"
+            />
             <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
+              <DropdownTrigger className="hidden sm:flex px-6">
                 <Button
                   endContent={<FontAwesomeIcon icon={faChevronDown} />}
                   size="sm"
@@ -266,12 +293,15 @@ export default function BookingsTable(props: Props) {
     );
   }, [
     filterValue,
+    filterDate,
     subscriptionFilter,
     visibleColumns,
     onSearchChange,
+    onDateChange,
     onRowsPerPageChange,
     meetings.length,
     hasSearchFilter,
+    hasDateFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -283,7 +313,7 @@ export default function BookingsTable(props: Props) {
             cursor: "bg-foreground text-background",
           }}
           color="default"
-          isDisabled={hasSearchFilter}
+          isDisabled={hasSearchFilter || hasDateFilter}
           page={page}
           total={pages}
           variant="light"
@@ -291,7 +321,7 @@ export default function BookingsTable(props: Props) {
         />
       </div>
     );
-  }, [items.length, page, pages, hasSearchFilter]);
+  }, [items.length, page, pages, hasSearchFilter, hasDateFilter]);
 
   return (
     <Table

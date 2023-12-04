@@ -16,12 +16,12 @@ type Props = {
   details: string;
 };
 
-export default function InfoMeetingModal(props: Props) {
+export default function InfoModal(props: Props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
-      <Tooltip size="sm" onClick={onOpen} content="Meeting details">
+      <Tooltip size="sm" onClick={onOpen} content="Details">
         <Button
           size="sm"
           onPress={onOpen}
@@ -37,7 +37,7 @@ export default function InfoMeetingModal(props: Props) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Meeting details
+                Details
               </ModalHeader>
               <ModalBody>
                 <p>{props.details}</p>
