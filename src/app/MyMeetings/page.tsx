@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import NavBar from "../components/NavBar";
-import MeetingsTable from "../components/MeetingsTable";
+import NavBar from "../../components/NavBar";
+import MeetingsTable from "../../components/MeetingsTable";
 import {
   columns,
   meetings,

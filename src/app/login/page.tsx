@@ -27,7 +27,7 @@ export default function Login({}: Props) {
     <div className="flex flex-col items-center">
       <Image
         removeWrapper
-        src="https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Hands-PNG/Handshake_Transparent_PNG_Clip_Art_Image.png?m=1507172105"
+        src="/rep-match-logo-cropped.svg"
         alt="Logo"
         width={80}
         className="my-10"

@@ -12,6 +12,21 @@ const config: Config = {
     extend: {},
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [nextui({
+    themes: {
+      light: {
+        layout: {}, // light theme layout tokens
+        colors: {
+          darkBlue: "#234366",
+          mediumBlue: "#086ad9",
+          lightBlue: "#11c7dc",
+        } // light theme colors
+      },
+      dark: {
+        layout: {}, // dark theme layout tokens
+        colors: {} // dark theme colors
+      },
+    }
+  })],
 }
 export default config

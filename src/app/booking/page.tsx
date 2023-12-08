@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import NavBar from "../components/NavBar";
-import BookingsTable from "../components/BookingsTable";
+import NavBar from "../../components/NavBar";
+import BookingsTable from "../../components/BookingsTable";
 import { columns, meetings } from "./bookingData";
 
 type Props = {};

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import NavBar from "../components/NavBar";
-import SubscriptionsTable from "../components/SubscriptionsTable";
+import NavBar from "../../components/NavBar";
+import SubscriptionsTable from "../../components/SubscriptionsTable";
 import { Tabs, Tab, Card, CardBody, CardHeader } from "@nextui-org/react";
 import {
   columns,
@@ -15,7 +15,7 @@ import {
   statusOptions as hospitalStatusOptions,
   statusColorMap as hospitalStatusColorMap,
 } from "./hospitalsData";
-import HospitalsTable from "../components/HospitalsTable";
+import HospitalsTable from "../../components/HospitalsTable";
 
 type Props = {};
 

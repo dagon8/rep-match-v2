@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import NavBarPractice from "../components/NavBarPractice";
-import MeetingsTable from "../components/MeetingsTable";
-import CreateMeetingModal from "../components/CreateMeetingModal";
+import NavBarPractice from "../../components/NavBarPractice";
+import MeetingsTable from "../../components/MeetingsTable";
+import CreateMeetingModal from "../../components/CreateMeetingModal";
 
 import {
   columns,
