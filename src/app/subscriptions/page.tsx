@@ -49,7 +49,10 @@ export default function Subscriptions({}: Props) {
   return (
     <>
       <NavBar pageName="Subscriptions" />
-      <div className="py-24">
+      <div className="container m-auto pt-10">
+        <h1 className="text-4xl font-bold text-darkBlue">Subscriptions</h1>
+      </div>
+      <div className="py-16">
         <div className="container m-auto">
           <div className="flex w-full flex-col">
             <Tabs aria-label="Dynamic tabs" items={tabs}>

@@ -33,7 +33,7 @@ export default function NavBar(props: Props) {
   ];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} isBordered>
+    <Navbar className="bg-darkBlue" onMenuOpenChange={setIsMenuOpen} isBordered>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -46,7 +46,7 @@ export default function NavBar(props: Props) {
             alt="Logo"
             width={40}
           />
-          <p className="font-bold text-inherit">REPMATCH</p>
+          <p className="font-bold text-inherit text-white">REPMATCH</p>
         </NavbarBrand>
       </NavbarContent>
 
@@ -57,6 +57,7 @@ export default function NavBar(props: Props) {
             isActive={item.name === props.pageName ? true : false}
           >
             <Link
+              className="text-white"
               color={item.name === props.pageName ? "primary" : "foreground"}
               href={item.page}
             >

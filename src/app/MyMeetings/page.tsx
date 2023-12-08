@@ -15,7 +15,10 @@ export default function MyMeetings({}: Props) {
   return (
     <>
       <NavBar pageName="My Meetings" />
-      <div className="py-24">
+      <div className="container m-auto pt-10">
+        <h1 className="text-4xl font-bold text-darkBlue">Meetings</h1>
+      </div>
+      <div className="py-16">
         <div className="container m-auto">
           <MeetingsTable
             columns={columns}
