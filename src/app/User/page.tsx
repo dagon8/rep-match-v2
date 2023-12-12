@@ -26,7 +26,8 @@ export default function User({}: Props) {
               <Avatar radius="sm" size="lg" color="primary" />
               <p className="text-2xl">John Doe</p>
             </div>
-            <div className="w-10/12 text-center flex flex-col">
+            
+            <div className="w-7/12 text-center flex flex-col">
               <Input type="text" variant="underlined" label="First name" />
               <Divider className="m-2 invisible" />
               <Input type="text" variant="underlined" label="Last name" />
@@ -45,6 +46,15 @@ export default function User({}: Props) {
                 placeholder="Enter a bio"
               />
               <Divider className="m-2 invisible" />
+              <Divider className="m-2 invisible" />
+              <div className="flex flex-col items-center justify-center">
+                <Button
+                  radius="sm"
+                  className="w-1/3"
+                >
+                  Save
+                </Button>
+              </div>
             </div>
           </div>
         </div>
