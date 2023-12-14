@@ -287,9 +287,8 @@ export default function HospitalsTable(props: Props) {
         <Pagination
           showControls
           classNames={{
-            cursor: "bg-foreground text-background",
+            cursor: "bg-darkBlue text-background",
           }}
-          color="default"
           isDisabled={hasSearchFilter}
           page={page}
           total={pages}

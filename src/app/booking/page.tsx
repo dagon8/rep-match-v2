@@ -10,7 +10,10 @@ export default function Booking({}: Props) {
   return (
     <>
       <NavBar pageName="Booking" />
-      <div className="py-24">
+      <div className="container m-auto pt-10">
+        <h1 className="text-4xl font-bold text-darkBlue">Book</h1>
+      </div>
+      <div className="py-16">
         <div className="container m-auto">
           <BookingsTable columns={columns} meetings={meetings} />
         </div>

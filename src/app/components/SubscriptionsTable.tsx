@@ -286,9 +286,8 @@ export default function SubscriptionsTable(props: Props) {
         <Pagination
           showControls
           classNames={{
-            cursor: "bg-foreground text-background",
+            cursor: "bg-darkBlue text-background",
           }}
-          color="default"
           isDisabled={hasSearchFilter}
           page={page}
           total={pages}
